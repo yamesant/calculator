@@ -47,4 +47,19 @@ public sealed class Tests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test, AutoData]
+    public void Division(double dividend, double divisor)
+    {
+        // Arrange
+        var values = new List<double> { dividend, divisor };
+        var expression = Expression.CreateMultiValued(values, new Division());
+        var expectedResult = dividend / divisor;
+        
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
