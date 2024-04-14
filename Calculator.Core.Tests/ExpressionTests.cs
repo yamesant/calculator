@@ -62,4 +62,19 @@ public sealed class Tests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test, AutoData]
+    public void Subtraction(double minuend, double subtrahend)
+    {
+        // Arrange
+        var values = new List<double> { minuend, subtrahend };
+        var expression = Expression.CreateMultiValued(values, new Subtraction());
+        var expectedResult = minuend - subtrahend;
+        
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
