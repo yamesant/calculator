@@ -1,11 +1,11 @@
-using AutoFixture.NUnit3;
 using FluentAssertions;
 
 namespace Calculator.Core.Tests;
 
 public sealed class Tests
 {
-    [Test, AutoData]
+    [Test]
+    [TestCase(12)]
     public void SingleValue(double value)
     {
         // Arrange
@@ -18,13 +18,13 @@ public sealed class Tests
         result.Should().Be(value);
     }
     
-    [Test, AutoData]
-    public void Addition(double firstSummand, double secondSummand)
+    [Test]
+    [TestCase(12, 4, 16)]
+    public void Addition(double firstSummand, double secondSummand, double expectedResult)
     {
         // Arrange
         var values = new List<double> { firstSummand, secondSummand };
         var expression = Expression.CreateMultiValued(values, new Addition());
-        var expectedResult = firstSummand + secondSummand;
         
         // Act
         var result = expression.Evaluate();
@@ -33,13 +33,13 @@ public sealed class Tests
         result.Should().Be(expectedResult);
     }
     
-    [Test, AutoData]
-    public void Multiplication(double firstFactor, double secondFactor)
+    [Test]
+    [TestCase(12, 4, 48)]
+    public void Multiplication(double firstFactor, double secondFactor, double expectedResult)
     {
         // Arrange
         var values = new List<double> { firstFactor, secondFactor };
         var expression = Expression.CreateMultiValued(values, new Multiplication());
-        var expectedResult = firstFactor * secondFactor;
         
         // Act
         var result = expression.Evaluate();
@@ -48,13 +48,13 @@ public sealed class Tests
         result.Should().Be(expectedResult);
     }
     
-    [Test, AutoData]
-    public void Division(double dividend, double divisor)
+    [Test]
+    [TestCase(12, 4, 3)]
+    public void Division(double dividend, double divisor, double expectedResult)
     {
         // Arrange
         var values = new List<double> { dividend, divisor };
         var expression = Expression.CreateMultiValued(values, new Division());
-        var expectedResult = dividend / divisor;
         
         // Act
         var result = expression.Evaluate();
@@ -63,13 +63,13 @@ public sealed class Tests
         result.Should().Be(expectedResult);
     }
     
-    [Test, AutoData]
-    public void Subtraction(double minuend, double subtrahend)
+    [Test]
+    [TestCase(12, 4, 8)]
+    public void Subtraction(double minuend, double subtrahend, double expectedResult)
     {
         // Arrange
         var values = new List<double> { minuend, subtrahend };
         var expression = Expression.CreateMultiValued(values, new Subtraction());
-        var expectedResult = minuend - subtrahend;
         
         // Act
         var result = expression.Evaluate();
