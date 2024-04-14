@@ -2,27 +2,36 @@
 
 public sealed class Expression
 {
-    private readonly List<double> _values;
+    private readonly List<Expression> _subexpressions;
     private readonly Operation _operation;
-    private Expression(List<double> values, Operation operation)
+    private Expression(List<Expression> subexpressions, Operation operation)
     {
-        if (!operation.CanApply(values.Count))
+        if (!operation.CanApply(subexpressions.Count))
             throw new ArgumentException("Operation arity does not match the number of arguments");
-        _values = values;
+        _subexpressions = subexpressions;
         _operation = operation;
     }
     public static Expression CreateSingleValued(double value)
     {
-        return new Expression(new List<double>(), new Constant(value));
+        return new Expression(new List<Expression>(), new Constant(value));
     }
 
     public static Expression CreateMultiValued(List<double> values, Operation operation)
     {
-        return new Expression(values, operation);
+        var subexpressions = values.Select(CreateSingleValued).ToList();
+        return new Expression(subexpressions, operation);
+    }
+    
+    public static Expression CreateNested(List<Expression> subexpressions, Operation operation)
+    {
+        return new Expression(subexpressions, operation);
     }
 
     public double Evaluate()
     {
-        return _operation.Apply(_values);
+        var values = _subexpressions
+            .Select(subexpression => subexpression.Evaluate())
+            .ToList();
+        return _operation.Apply(values);
     }
 }

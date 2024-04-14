@@ -90,4 +90,28 @@ public sealed class Tests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test]
+    public void Nested()
+    {
+        // Arrange
+        // ((5 * 4) - 2) / (2 + 3 + 4)  = 2
+        var expression = Expression.CreateNested(new List<Expression>()
+            {
+                Expression.CreateNested(new List<Expression>()
+                {
+                    Expression.CreateMultiValued(new List<double> {5, 4}, new Multiplication()),
+                    Expression.CreateSingleValued(2),
+                }, new Subtraction()),
+                Expression.CreateMultiValued(new List<double> {2, 3, 4}, new Addition()),
+            },
+            new Division());
+        var expectedResult = 2;
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
