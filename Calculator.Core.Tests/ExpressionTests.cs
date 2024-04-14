@@ -64,6 +64,19 @@ public sealed class Tests
     }
     
     [Test]
+    public void DivisionThrowsInvalidArgument()
+    {
+        // Arrange
+        var values = new List<double> { 1, 2, 3 };
+        
+        // Act
+        var action = () => Expression.CreateMultiValued(values, new Division());
+
+        // Assert
+        action.Should().Throw<ArgumentException>();
+    }
+    
+    [Test]
     [TestCase(12, 4, 8)]
     public void Subtraction(double minuend, double subtrahend, double expectedResult)
     {

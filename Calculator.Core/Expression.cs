@@ -6,6 +6,8 @@ public sealed class Expression
     private readonly Operation _operation;
     private Expression(List<double> values, Operation operation)
     {
+        if (!operation.CanApply(values.Count))
+            throw new ArgumentException("Operation arity does not match the number of arguments");
         _values = values;
         _operation = operation;
     }
