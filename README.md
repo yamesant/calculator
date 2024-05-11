@@ -1,4 +1,4 @@
-This is a checkpoint branch. It corresponds to the blog post at: https://try-and-trash.ghost.io/calculator-engine-in-c/
+This is a checkpoint branch. It corresponds to the blog post at: https://try-and-trash.com/calculator-engine-in-c/
 
 This project implements a simple calculator engine.
 
