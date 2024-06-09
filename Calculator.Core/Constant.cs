@@ -8,4 +8,13 @@ public sealed class Constant(double value) : Operation
     {
         return value;
     }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return value;
+        foreach (var baseEqualityComponent in base.GetEqualityComponents())
+        {
+            yield return baseEqualityComponent;
+        }
+    }
 }
