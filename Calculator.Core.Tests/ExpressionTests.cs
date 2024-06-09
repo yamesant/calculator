@@ -6,7 +6,7 @@ public sealed class Tests
 {
     [Test]
     [TestCase(12)]
-    public void SingleValue(double value)
+    public void CanEvaluateSingleValued(double value)
     {
         // Arrange
         var expression = Expression.CreateSingleValued(value);
@@ -20,7 +20,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 16)]
-    public void Addition(double firstSummand, double secondSummand, double expectedResult)
+    public void CanEvaluateAddition(double firstSummand, double secondSummand, double expectedResult)
     {
         // Arrange
         var values = new List<double> { firstSummand, secondSummand };
@@ -35,7 +35,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 48)]
-    public void Multiplication(double firstFactor, double secondFactor, double expectedResult)
+    public void CanEvaluateMultiplication(double firstFactor, double secondFactor, double expectedResult)
     {
         // Arrange
         var values = new List<double> { firstFactor, secondFactor };
@@ -50,7 +50,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 3)]
-    public void Division(double dividend, double divisor, double expectedResult)
+    public void CanEvaluateDivision(double dividend, double divisor, double expectedResult)
     {
         // Arrange
         var values = new List<double> { dividend, divisor };
@@ -78,7 +78,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 8)]
-    public void Subtraction(double minuend, double subtrahend, double expectedResult)
+    public void CanEvaluateSubtraction(double minuend, double subtrahend, double expectedResult)
     {
         // Arrange
         var values = new List<double> { minuend, subtrahend };
@@ -92,7 +92,7 @@ public sealed class Tests
     }
 
     [Test]
-    public void Nested()
+    public void CanEvaluateNested()
     {
         // Arrange
         // ((5 * 4) - 2) / (2 + 3 + 4)  = 2
