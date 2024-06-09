@@ -15,4 +15,16 @@ public abstract class Operation : ValueObject
     {
         yield break;
     }
+    
+    public static Operation FromName(string operationName)
+    {
+        return operationName switch
+        {
+            Addition.Name => new Addition(),
+            Division.Name => new Division(),
+            Multiplication.Name => new Multiplication(),
+            Subtraction.Name => new Subtraction(),
+            _ => throw new Exception("Unsupported operation name")
+        };
+    }
 }

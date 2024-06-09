@@ -2,6 +2,7 @@ namespace Calculator.Core;
 
 public sealed class Subtraction : Operation
 {
+    public const string Name = "Subtraction";
     protected override Arity Arity => Arity.CreateFixed(2);
     public override double Apply(List<double> values)
     {
