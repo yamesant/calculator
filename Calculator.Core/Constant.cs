@@ -2,6 +2,7 @@ namespace Calculator.Core;
 
 public sealed class Constant(double value) : Operation
 {
+    public override string Name => $"Constant({value})";
     protected override Arity Arity => Arity.CreateFixed(0);
 
     public override double Apply(List<double> values)

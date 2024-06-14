@@ -2,6 +2,7 @@ namespace Calculator.Core;
 
 public abstract class Operation : ValueObject
 {
+    public abstract string Name { get; }
     protected abstract Arity Arity { get; }
     public abstract double Apply(List<double> values);
 
@@ -20,10 +21,10 @@ public abstract class Operation : ValueObject
     {
         return operationName switch
         {
-            Addition.Name => new Addition(),
-            Division.Name => new Division(),
-            Multiplication.Name => new Multiplication(),
-            Subtraction.Name => new Subtraction(),
+            Addition.OperationName => new Addition(),
+            Division.OperationName => new Division(),
+            Multiplication.OperationName => new Multiplication(),
+            Subtraction.OperationName => new Subtraction(),
             _ => throw new Exception("Unsupported operation name")
         };
     }

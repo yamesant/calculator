@@ -1,12 +1,33 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Calculator.Core;
 
 public sealed class ExpressionJsonSerializer : IExpressionJsonSerializer
 {
+    private static readonly JsonSerializerOptions Options = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+    };
     public string Serialize(Expression expression)
     {
-        throw new NotImplementedException();
+        ExpressionModel model = ConvertToModel(expression);
+        return JsonSerializer.Serialize(model, Options);
+    }
+
+    private ExpressionModel ConvertToModel(Expression expression)
+    {
+        if (expression.Subexpressions.Count == 0)
+        {
+            return new ExpressionModel { Value = expression.Evaluate() };
+        }
+
+        ExpressionModel result = new()
+        {
+            Operation = expression.Operation.Name,
+            Subexpressions = expression.Subexpressions.Select(ConvertToModel).ToList(),
+        };
+        return result;
     }
 
     public Expression? Deserialize(string json)
@@ -55,8 +76,8 @@ public sealed class ExpressionJsonSerializer : IExpressionJsonSerializer
 
     private sealed class ExpressionModel
     {
-        public double? Value { get; set; }
-        public string? Operation { get; set; }
-        public List<ExpressionModel>? Subexpressions { get; set; }
+        public double? Value { get; init; }
+        public string? Operation { get; init; }
+        public List<ExpressionModel>? Subexpressions { get; init; }
     }
 }
