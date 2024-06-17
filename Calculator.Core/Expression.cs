@@ -1,7 +1,9 @@
 ﻿namespace Calculator.Core;
 
-public sealed class Expression
+public sealed class Expression : ValueObject
 {
+    public IReadOnlyList<Expression> Subexpressions => _subexpressions;
+    public Operation Operation => _operation;
     private readonly List<Expression> _subexpressions;
     private readonly Operation _operation;
     private Expression(List<Expression> subexpressions, Operation operation)
@@ -33,5 +35,14 @@ public sealed class Expression
             .Select(subexpression => subexpression.Evaluate())
             .ToList();
         return _operation.Apply(values);
+    }
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return _operation;
+        foreach (Expression subexpression in _subexpressions)
+        {
+            yield return subexpression;
+        }
     }
 }

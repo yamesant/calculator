@@ -6,7 +6,7 @@ public sealed class Tests
 {
     [Test]
     [TestCase(12)]
-    public void SingleValue(double value)
+    public void CanEvaluateSingleValued(double value)
     {
         // Arrange
         var expression = Expression.CreateSingleValued(value);
@@ -20,7 +20,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 16)]
-    public void Addition(double firstSummand, double secondSummand, double expectedResult)
+    public void CanEvaluateAddition(double firstSummand, double secondSummand, double expectedResult)
     {
         // Arrange
         var values = new List<double> { firstSummand, secondSummand };
@@ -35,7 +35,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 48)]
-    public void Multiplication(double firstFactor, double secondFactor, double expectedResult)
+    public void CanEvaluateMultiplication(double firstFactor, double secondFactor, double expectedResult)
     {
         // Arrange
         var values = new List<double> { firstFactor, secondFactor };
@@ -50,7 +50,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 3)]
-    public void Division(double dividend, double divisor, double expectedResult)
+    public void CanEvaluateDivision(double dividend, double divisor, double expectedResult)
     {
         // Arrange
         var values = new List<double> { dividend, divisor };
@@ -78,7 +78,7 @@ public sealed class Tests
     
     [Test]
     [TestCase(12, 4, 8)]
-    public void Subtraction(double minuend, double subtrahend, double expectedResult)
+    public void CanEvaluateSubtraction(double minuend, double subtrahend, double expectedResult)
     {
         // Arrange
         var values = new List<double> { minuend, subtrahend };
@@ -90,9 +90,9 @@ public sealed class Tests
         // Assert
         result.Should().Be(expectedResult);
     }
-    
+
     [Test]
-    public void Nested()
+    public void CanEvaluateNested()
     {
         // Arrange
         // ((5 * 4) - 2) / (2 + 3 + 4)  = 2
@@ -100,10 +100,10 @@ public sealed class Tests
             {
                 Expression.CreateNested(new List<Expression>()
                 {
-                    Expression.CreateMultiValued(new List<double> {5, 4}, new Multiplication()),
+                    Expression.CreateMultiValued(new List<double> { 5, 4 }, new Multiplication()),
                     Expression.CreateSingleValued(2),
                 }, new Subtraction()),
-                Expression.CreateMultiValued(new List<double> {2, 3, 4}, new Addition()),
+                Expression.CreateMultiValued(new List<double> { 2, 3, 4 }, new Addition()),
             },
             new Division());
         var expectedResult = 2;
@@ -113,5 +113,41 @@ public sealed class Tests
 
         // Assert
         result.Should().Be(expectedResult);
+    }
+    
+    [Test]
+    [TestCase(1, 2)]
+    public void SameExpressionsEqual(double value1, double value2)
+    {
+        // Arrange
+        Expression expression1 = Expression.CreateMultiValued([value1, value2], new Addition());
+        Expression expression2 = Expression.CreateMultiValued([value1, value2], new Addition());
+        
+        // Assert
+        expression1.Should().Be(expression2);
+    }
+    
+    [Test]
+    [TestCase(1, 2)]
+    public void DifferentValuedExpressionsNotEqual(double value1, double value2)
+    {
+        // Arrange
+        Expression expression1 = Expression.CreateMultiValued([value1, value2], new Addition());
+        Expression expression2 = Expression.CreateMultiValued([value2, value1], new Addition());
+        
+        // Assert
+        expression1.Should().NotBe(expression2);
+    }
+    
+    [Test]
+    [TestCase(1, 2)]
+    public void DifferentOperationExpressionsNotEqual(double value1, double value2)
+    {
+        // Arrange
+        Expression expression1 = Expression.CreateMultiValued([value1, value2], new Addition());
+        Expression expression2 = Expression.CreateMultiValued([value1, value2], new Subtraction());
+        
+        // Assert
+        expression1.Should().NotBe(expression2);
     }
 }
