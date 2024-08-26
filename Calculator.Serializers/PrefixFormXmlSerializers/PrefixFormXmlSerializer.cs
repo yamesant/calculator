@@ -79,6 +79,10 @@ public sealed class PrefixFormXmlSerializer : ISerializer
             {
                 next++;
                 Operation operation = Operation.FromName(operationElement.Name);
+                if (!operation.CanApply(operationElement.Arity))
+                {
+                    return null;
+                }
                 List<Expression> subexpressions = new();
                 for (int i = 0; i < operationElement.Arity; i++)
                 {
