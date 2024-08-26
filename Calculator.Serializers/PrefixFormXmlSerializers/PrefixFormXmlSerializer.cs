@@ -50,6 +50,50 @@ public sealed class PrefixFormXmlSerializer : ISerializer
 
     public Expression? Deserialize(string data)
     {
-        throw new NotImplementedException();
+        XmlSerializer serializer = new(typeof(Data));
+        using StringReader stringReader = new(data);
+        Data? dataModel =  (Data?)serializer.Deserialize(stringReader);
+        if (dataModel is null)
+        {
+            return null;
+        }
+        List<ExpressionElement> elements = dataModel.Elements;
+        int next = 0;
+        Expression? expression = Process();
+        return expression;
+
+        Expression? Process()
+        {
+            if (next == elements.Count)
+            {
+                return null;
+            }
+            
+            if (elements[next] is ValueElement valueElement)
+            {
+                next++;
+                return Expression.CreateSingleValued(valueElement.Value);
+            }
+            
+            if (elements[next] is OperationElement operationElement)
+            {
+                next++;
+                Operation operation = Operation.FromName(operationElement.Name);
+                List<Expression> subexpressions = new();
+                for (int i = 0; i < operationElement.Arity; i++)
+                {
+                    Expression? subexpression = Process();
+                    if (subexpression is null)
+                    {
+                        return null;
+                    }
+                    subexpressions.Add(subexpression);
+                }
+
+                return Expression.CreateNested(subexpressions, operation);
+            }
+
+            return null;
+        }
     }
 }
