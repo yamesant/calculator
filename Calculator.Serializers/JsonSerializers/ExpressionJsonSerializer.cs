@@ -4,7 +4,7 @@ using Calculator.Core;
 
 namespace Calculator.Serializers.JsonSerializers;
 
-public sealed class ExpressionJsonSerializer : IExpressionJsonSerializer
+public sealed class ExpressionJsonSerializer : ISerializer
 {
     private static readonly JsonSerializerOptions Options = new()
     {
