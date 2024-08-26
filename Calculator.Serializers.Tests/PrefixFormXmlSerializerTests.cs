@@ -1,10 +1,10 @@
-using Calculator.Serializers.NestedXmlSerializers;
+using Calculator.Serializers.PrefixFormXmlSerializers;
 
 namespace Calculator.Serializers.Tests;
 
 public sealed class PrefixFormXmlSerializerTests
 {
-    private readonly ISerializer _sut = new NestedXmlSerializer();
+    private readonly ISerializer _sut = new PrefixFormXmlSerializer();
     
     [Test]
     public void CanSerializeSingleValued()
@@ -15,7 +15,9 @@ public sealed class PrefixFormXmlSerializerTests
             """
             <?xml version="1.0" encoding="utf-16"?>
             <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <Expression xsi:type="Value">-1</Expression>
+                <Elements>
+                    <Element xsi:type="Value">-1</Element>
+                </Elements>
             </Data>
             """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
         
@@ -35,12 +37,14 @@ public sealed class PrefixFormXmlSerializerTests
             """
             <?xml version="1.0" encoding="utf-16"?>
             <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <Expression xsi:type="Operation" Name="Addition">
-                    <Subexpressions>
-                        <Expression xsi:type="Value">1.5</Expression>
-                        <Expression xsi:type="Value">1.5</Expression>
-                    </Subexpressions>
-                </Expression>
+                <Elements>
+                    <Element xsi:type="Operation">
+                        <Name>Addition</Name>
+                        <Arity>2</Arity>
+                    </Element>
+                    <Element xsi:type="Value">1.5</Element>
+                    <Element xsi:type="Value">1.5</Element>
+                </Elements>
             </Data>
             """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
         
@@ -66,18 +70,20 @@ public sealed class PrefixFormXmlSerializerTests
             """
             <?xml version="1.0" encoding="utf-16"?>
             <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <Expression xsi:type="Operation" Name="Multiplication">
-                    <Subexpressions>
-                        <Expression xsi:type="Value">2</Expression>
-                        <Expression xsi:type="Operation" Name="Subtraction">
-                            <Subexpressions>
-                                <Expression xsi:type="Value">3</Expression>
-                                <Expression xsi:type="Value">1</Expression>
-                            </Subexpressions>
-                        </Expression>
-                        <Expression xsi:type="Value">2</Expression>
-                    </Subexpressions>
-                </Expression>
+                <Elements>
+                    <Element xsi:type="Operation">
+                        <Name>Multiplication</Name>
+                        <Arity>3</Arity>
+                    </Element>
+                    <Element xsi:type="Value">2</Element>
+                    <Element xsi:type="Operation">
+                        <Name>Subtraction</Name>
+                        <Arity>2</Arity>
+                    </Element>
+                    <Element xsi:type="Value">3</Element>
+                    <Element xsi:type="Value">1</Element>
+                    <Element xsi:type="Value">2</Element>
+                </Elements>
             </Data>
             """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
         
@@ -96,7 +102,9 @@ public sealed class PrefixFormXmlSerializerTests
             """
             <?xml version="1.0" encoding="utf-16"?>
             <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <Expression xsi:type="Value">-1</Expression>
+                <Elements>
+                    <Element xsi:type="Value">-1</Element>
+                </Elements>
             </Data>
             """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
         
@@ -117,12 +125,14 @@ public sealed class PrefixFormXmlSerializerTests
             """
             <?xml version="1.0" encoding="utf-16"?>
             <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <Expression xsi:type="Operation" Name="Addition">
-                    <Subexpressions>
-                        <Expression xsi:type="Value">1.5</Expression>
-                        <Expression xsi:type="Value">1.5</Expression>
-                    </Subexpressions>
-                </Expression>
+                <Elements>
+                    <Element xsi:type="Operation">
+                        <Name>Addition</Name>
+                        <Arity>2</Arity>
+                    </Element>
+                    <Element xsi:type="Value">1.5</Element>
+                    <Element xsi:type="Value">1.5</Element>
+                </Elements>
             </Data>
             """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
         Expression expected = Expression.CreateMultiValued([1.5, 1.5], new Addition());
@@ -142,18 +152,20 @@ public sealed class PrefixFormXmlSerializerTests
             """
             <?xml version="1.0" encoding="utf-16"?>
             <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <Expression xsi:type="Operation" Name="Multiplication">
-                    <Subexpressions>
-                        <Expression xsi:type="Value">2</Expression>
-                        <Expression xsi:type="Operation" Name="Subtraction">
-                            <Subexpressions>
-                                <Expression xsi:type="Value">3</Expression>
-                                <Expression xsi:type="Value">1</Expression>
-                            </Subexpressions>
-                        </Expression>
-                        <Expression xsi:type="Value">2</Expression>
-                    </Subexpressions>
-                </Expression>
+                <Elements>
+                    <Element xsi:type="Operation">
+                        <Name>Multiplication</Name>
+                        <Arity>3</Arity>
+                    </Element>
+                    <Element xsi:type="Value">2</Element>
+                    <Element xsi:type="Operation">
+                        <Name>Subtraction</Name>
+                        <Arity>2</Arity>
+                    </Element>
+                    <Element xsi:type="Value">3</Element>
+                    <Element xsi:type="Value">1</Element>
+                    <Element xsi:type="Value">2</Element>
+                </Elements>
             </Data>
             """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
         
