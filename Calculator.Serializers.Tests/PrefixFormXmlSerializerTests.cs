@@ -182,4 +182,56 @@ public sealed class PrefixFormXmlSerializerTests
         // Assert
         result.Should().Be(expected);
     }
+    
+    [Test]
+    public void FailToDeserializeWhenNotEnoughElements()
+    {
+        // Arrange
+        string data =
+            """
+                <?xml version="1.0" encoding="utf-16"?>
+                <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                    <Elements>
+                        <Element xsi:type="Operation">
+                            <Name>Addition</Name>
+                            <Arity>2</Arity>
+                        </Element>
+                        <Element xsi:type="Value">1</Element>
+                    </Elements>
+                </Data>
+                """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
+        
+        // Act
+        Expression? result = _sut.Deserialize(data);
+        
+        // Assert
+        result.Should().BeNull();
+    }
+    
+    [Test]
+    public void FailToDeserializeWhenTooManyElements()
+    {
+        // Arrange
+        string data =
+            """
+                <?xml version="1.0" encoding="utf-16"?>
+                <Data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                    <Elements>
+                        <Element xsi:type="Operation">
+                            <Name>Addition</Name>
+                            <Arity>2</Arity>
+                        </Element>
+                        <Element xsi:type="Value">1</Element>
+                        <Element xsi:type="Value">1</Element>
+                        <Element xsi:type="Value">1</Element>
+                    </Elements>
+                </Data>
+                """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
+        
+        // Act
+        Expression? result = _sut.Deserialize(data);
+        
+        // Assert
+        result.Should().BeNull();
+    }
 }

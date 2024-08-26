@@ -60,7 +60,7 @@ public sealed class PrefixFormXmlSerializer : ISerializer
         List<ExpressionElement> elements = dataModel.Elements;
         int next = 0;
         Expression? expression = Process();
-        return expression;
+        return next < elements.Count ? null : expression;
 
         Expression? Process()
         {
