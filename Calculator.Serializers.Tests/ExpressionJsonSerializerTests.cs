@@ -1,6 +1,6 @@
-using FluentAssertions;
+using Calculator.Serializers.JsonSerializers;
 
-namespace Calculator.Core.Tests;
+namespace Calculator.Serializers.Tests;
 
 public sealed class ExpressionJsonSerializerTests
 {

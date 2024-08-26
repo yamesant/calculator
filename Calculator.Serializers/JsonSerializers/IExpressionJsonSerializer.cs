@@ -1,4 +1,6 @@
-namespace Calculator.Core;
+using Calculator.Core;
+
+namespace Calculator.Serializers.JsonSerializers;
 
 public interface IExpressionJsonSerializer
 {

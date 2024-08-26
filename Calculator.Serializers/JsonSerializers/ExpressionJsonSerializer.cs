@@ -1,7 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Calculator.Core;
 
-namespace Calculator.Core;
+namespace Calculator.Serializers.JsonSerializers;
 
 public sealed class ExpressionJsonSerializer : IExpressionJsonSerializer
 {
