@@ -11,56 +11,147 @@ public sealed class ExpressionJsonSerializerTests
     {
         // Arrange
         Expression expression = Expression.CreateSingleValued(1);
-        string expectedJson = @"{""Value"":1}";
+        string expected =
+            """
+            {"Value": 1}
+            """.Replace("\r", "").Replace("\n", "").Replace(" ", "");
         
         // Act
-        string json = _sut.Serialize(expression);
+        string result = _sut.Serialize(expression);
         
         // Assert
-        json.Should().Be(expectedJson);
+        result.Should().Be(expected);
     }
     [Test]
     public void CanSerializeMultiValued()
     {
         // Arrange
         Expression expression = Expression.CreateMultiValued([3, 3], new Addition());
-        string expectedJson = @"{""Operation"":""Addition"",""Subexpressions"":[{""Value"":3},{""Value"":3}]}";
+        string expected =
+            """
+            {
+            "Operation": "Addition",
+            "Subexpressions":[
+                {"Value":3},
+                {"Value":3}
+            ]}
+            """.Replace("\r", "").Replace("\n", "").Replace(" ", "");
         
         // Act
-        string json = _sut.Serialize(expression);
+        string result = _sut.Serialize(expression);
         
         // Assert
-        json.Should().Be(expectedJson);
+        result.Should().Be(expected);
+    }
+    
+    [Test]
+    public void CanSerializeNested()
+    {
+        // Arrange
+        Expression expression = Expression.CreateNested(
+        [
+            Expression.CreateSingleValued(2),
+            Expression.CreateMultiValued([3, 1], new Subtraction()),
+            Expression.CreateSingleValued(2)
+        ], new Multiplication());
+        
+        string expected =
+            """
+            {
+                "Operation": "Multiplication",
+                "Subexpressions": [
+                    { "Value": 2 },
+                    {
+                        "Operation": "Subtraction",
+                        "Subexpressions": [
+                            { "Value": 3 },
+                            { "Value": 1 }
+                        ]
+                    },
+                    { "Value": 2 }
+                ]
+            }
+            """.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+        
+        // Act
+        string result = _sut.Serialize(expression);
+        
+        // Assert
+        result.Should().Be(expected);
     }
     
     [Test]
     public void CanDeserializeSingleValued()
     {
         // Arrange
-        string json = @"{""Value"": 1}";
-        Expression expectedExpression = Expression.CreateSingleValued(1);
+        string data =
+            """
+            {"Value": 1}
+            """.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+        Expression expected = Expression.CreateSingleValued(1);
         
         // Act
-        Expression? expression = _sut.Deserialize(json);
+        Expression? result = _sut.Deserialize(data);
         
         // Assert
-        expression.Should().Be(expectedExpression);
+        result.Should().Be(expected);
     }
     
     [Test]
     public void CanDeserializeMultiValued()
     {
         // Arrange
-        string json = @"{
-            ""Operation"": ""Addition"",
-            ""Subexpressions"": [{""Value"": 3}, {""Value"": 3}]
-            }";
-        Expression expectedExpression = Expression.CreateMultiValued([3, 3], new Addition());
+        string data =
+            """
+            {
+            "Operation": "Addition",
+            "Subexpressions": [
+                {"Value": 3},
+                {"Value": 3}
+            ]}
+            """.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+        Expression expected = Expression.CreateMultiValued([3, 3], new Addition());
         
         // Act
-        Expression? expression = _sut.Deserialize(json);
+        Expression? result = _sut.Deserialize(data);
         
         // Assert
-        expression.Should().Be(expectedExpression);
+        result.Should().Be(expected);
+    }
+    
+    [Test]
+    public void CanDeserializeNested()
+    {
+        // Arrange
+        string data =
+            """
+            {
+                "Operation": "Multiplication",
+                "Subexpressions": [
+                    { "Value": 2 },
+                    {
+                        "Operation": "Subtraction",
+                        "Subexpressions": [
+                            { "Value": 3 },
+                            { "Value": 1 }
+                        ]
+                    },
+                    { "Value": 2 }
+                ]
+            }
+            """.Replace("\r", "").Replace("\n", "").Replace("  ", "");
+        
+        Expression expected = Expression.CreateNested(
+        [
+            Expression.CreateSingleValued(2),
+            Expression.CreateMultiValued([3, 1], new Subtraction()),
+            Expression.CreateSingleValued(2)
+        ], new Multiplication());
+        
+        // Act
+        Expression? result = _sut.Deserialize(data);
+        
+        // Assert
+        result.Should().Be(expected);
     }
 }
