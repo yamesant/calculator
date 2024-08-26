@@ -10,8 +10,4 @@
       <ProjectReference Include="..\Calculator.Core\Calculator.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="PrefixFormXmlSerializers\" />
-    </ItemGroup>
-
 </Project>
