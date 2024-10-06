@@ -5,7 +5,7 @@ using Calculator.Core;
 
 namespace Calculator.Serializers.NestedXmlSerializers;
 
-public sealed class NestedXmlSerializer : ISerializer
+public sealed class NestedXmlSerializer(OperationsInstantiater operationsInstantiater) : ISerializer
 {
     public string Serialize(Expression expression)
     {
@@ -68,7 +68,7 @@ public sealed class NestedXmlSerializer : ISerializer
 
             return Expression.CreateNested(
                 subexpressions,
-                Operation.FromName(operationExpressionModel.Name)
+                operationsInstantiater.Create(operationExpressionModel.Name)
             );
         }
 

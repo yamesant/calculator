@@ -4,7 +4,7 @@ namespace Calculator.Serializers.Tests;
 
 public sealed class NestedXmlSerializerTests
 {
-    private readonly ISerializer _sut = new NestedXmlSerializer();
+    private readonly ISerializer _sut = new NestedXmlSerializer(new OperationsInstantiater());
     
     [Test]
     public void CanSerializeSingleValued()

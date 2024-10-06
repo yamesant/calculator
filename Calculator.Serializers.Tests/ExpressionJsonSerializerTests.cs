@@ -4,7 +4,7 @@ namespace Calculator.Serializers.Tests;
 
 public sealed class ExpressionJsonSerializerTests
 {
-    private readonly ISerializer _sut = new ExpressionJsonSerializer();
+    private readonly ISerializer _sut = new ExpressionJsonSerializer(new OperationsInstantiater());
 
     [Test]
     public void CanSerializeSingleValued()

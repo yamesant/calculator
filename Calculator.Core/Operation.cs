@@ -16,16 +16,4 @@ public abstract class Operation : ValueObject
     {
         yield break;
     }
-    
-    public static Operation FromName(string operationName)
-    {
-        return operationName switch
-        {
-            Addition.OperationName => new Addition(),
-            Division.OperationName => new Division(),
-            Multiplication.OperationName => new Multiplication(),
-            Subtraction.OperationName => new Subtraction(),
-            _ => throw new Exception("Unsupported operation name")
-        };
-    }
 }

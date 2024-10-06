@@ -4,7 +4,7 @@ namespace Calculator.Serializers.Tests;
 
 public sealed class PrefixFormXmlSerializerTests
 {
-    private readonly ISerializer _sut = new PrefixFormXmlSerializer();
+    private readonly ISerializer _sut = new PrefixFormXmlSerializer(new OperationsInstantiater());
     
     [Test]
     public void CanSerializeSingleValued()
