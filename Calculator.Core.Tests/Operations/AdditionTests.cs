@@ -15,4 +15,19 @@ public sealed class AdditionTests
         // Assert
         operation.Should().Be(expected);
     }
+    
+    [Test]
+    [TestCase(12, 4, 16)]
+    public void CanEvaluate(double firstSummand, double secondSummand, double expectedResult)
+    {
+        // Arrange
+        List<double> values = [firstSummand, secondSummand];
+        Expression expression = Expression.CreateMultiValued(values, new Addition());
+        
+        // Act
+        double result = expression.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }

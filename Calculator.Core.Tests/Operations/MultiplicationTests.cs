@@ -15,4 +15,19 @@ public sealed class MultiplicationTests
         // Assert
         operation.Should().Be(expected);
     }
+    
+    [Test]
+    [TestCase(12, 4, 48)]
+    public void CanEvaluate(double firstFactor, double secondFactor, double expectedResult)
+    {
+        // Arrange
+        List<double> values = [firstFactor, secondFactor];
+        Expression expression = Expression.CreateMultiValued(values, new Multiplication());
+        
+        // Act
+        double result = expression.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
