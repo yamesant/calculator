@@ -1,6 +1,4 @@
-using FluentAssertions;
-
-namespace Calculator.Core.Tests;
+namespace Calculator.Core.Tests.Operations;
 
 public sealed class ConstantTests
 {

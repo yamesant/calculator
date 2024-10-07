@@ -1,3 +1,5 @@
+using Calculator.Core.Operations;
+
 namespace Calculator.Core;
 
 public sealed class OperationsInstantiater

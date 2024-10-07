@@ -1,4 +1,6 @@
-﻿namespace Calculator.Core;
+﻿using Calculator.Core.Operations;
+
+namespace Calculator.Core;
 
 public sealed class Expression : ValueObject
 {

@@ -1,4 +1,4 @@
-namespace Calculator.Core;
+namespace Calculator.Core.Operations;
 
 public sealed class Addition : Operation
 {
