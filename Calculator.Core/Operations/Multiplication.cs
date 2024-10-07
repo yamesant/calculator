@@ -2,8 +2,7 @@ namespace Calculator.Core.Operations;
 
 public sealed class Multiplication : Operation
 {
-    public override string Name => OperationName;
-    public const string OperationName = "Multiplication";
+    public override string Name => "Multiplication";
     protected override Arity Arity => Arity.CreateVarying();
     public override double Apply(List<double> values)
     {

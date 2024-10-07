@@ -1,18 +1,25 @@
-using Calculator.Core.Operations;
+using System.Reflection;
 
 namespace Calculator.Core;
 
 public sealed class OperationsInstantiater
 {
+    private static readonly Dictionary<string, Type> OperationTypes;
+    static OperationsInstantiater()
+    {
+        OperationTypes = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(t => typeof(Operation).IsAssignableFrom(t) && !t.IsAbstract)
+            .Where(t => t.GetConstructor(Type.EmptyTypes) != null)
+            .ToDictionary(t => ((Operation)Activator.CreateInstance(t)!).Name, t => t);
+    }
     public Operation Create(string operationName)
     {
-        return operationName switch
+        if (OperationTypes.TryGetValue(operationName, out Type? operationType))
         {
-            Addition.OperationName => new Addition(),
-            Division.OperationName => new Division(),
-            Multiplication.OperationName => new Multiplication(),
-            Subtraction.OperationName => new Subtraction(),
-            _ => throw new Exception("Unsupported operation name")
-        };
+            return (Operation)Activator.CreateInstance(operationType)!;
+        }
+
+        throw new Exception($"Unsupported operation name: {operationName}");
     }
 }
