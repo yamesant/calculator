@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 namespace Calculator.Core.Tests;
 
 public sealed class OperationTests

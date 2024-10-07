@@ -4,7 +4,7 @@ using Calculator.Core;
 
 namespace Calculator.Serializers.JsonSerializers;
 
-public sealed class ExpressionJsonSerializer : ISerializer
+public sealed class ExpressionJsonSerializer(OperationsInstantiater operationsInstantiater) : ISerializer
 {
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -59,7 +59,7 @@ public sealed class ExpressionJsonSerializer : ISerializer
             return null;
         }
 
-        Operation operation = Operation.FromName(expressionModel.Operation);
+        Operation operation = operationsInstantiater.Create(expressionModel.Operation);
         List<Expression> subexpressions = new();
         foreach (ExpressionModel subexpressionDto in expressionModel.Subexpressions)
         {

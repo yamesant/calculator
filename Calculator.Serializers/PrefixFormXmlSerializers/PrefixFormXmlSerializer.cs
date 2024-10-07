@@ -5,7 +5,7 @@ using Calculator.Core;
 
 namespace Calculator.Serializers.PrefixFormXmlSerializers;
 
-public sealed class PrefixFormXmlSerializer : ISerializer
+public sealed class PrefixFormXmlSerializer(OperationsInstantiater operationsInstantiater) : ISerializer
 {
     public string Serialize(Expression expression)
     {
@@ -78,7 +78,7 @@ public sealed class PrefixFormXmlSerializer : ISerializer
             if (elements[next] is OperationElement operationElement)
             {
                 next++;
-                Operation operation = Operation.FromName(operationElement.Name);
+                Operation operation = operationsInstantiater.Create(operationElement.Name);
                 if (!operation.CanApply(operationElement.Arity))
                 {
                     return null;
